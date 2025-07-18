@@ -1,0 +1,44 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+    <div class="text-center py-12 px-4">
+    <h1 class="text-4xl font-bold mb-4">The Best Papers and Pens</h1>
+    <p class="text-gray-600 text-base mt-8 max-w-xl mx-auto">
+        Explore our curated collection of quality stationery and office supplies — from well-crafted paper to smooth-flowing pens, perfect for writing, planning, and creating. 
+    </p>
+    <p class="text-gray-600 mt-12 text-base max-w-xl mx-auto">
+        The suggested prices for our products are indicated on our site, but request a quotation and we'll find a way to deliver you the best possible deal. 
+    </p>
+    </div>
+
+
+    <div class="mt-5 px-6 py-12 bg-blue-100">
+        <h2 class="mb-12 text-2xl text-center">Latest Products</h2>
+
+        <div class="grid grid-cols-3 gap-3">
+            {% for item in items %}
+                <div class="bg-white shadow h-full">
+                    <a href="{% url 'item:detail' item.id %}" class="flex flex-col h-full">
+                        <div class="h-64 overflow-hidden">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover">
+                            {% else %}
+                                <div class="flex items-center justify-center h-full text-gray-400">
+                                    <p>No image available</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="p-4 flex flex-col justify-between flex-grow">
+                            <h2 class="text-lg font-semibold mb-2">{{ item.name }}</h2>
+                            <p class="text-gray-500">Suggested Price: {{ item.price }}</p>
+                        </div>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

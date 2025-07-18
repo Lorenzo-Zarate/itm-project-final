@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Quotation{% endblock %}
+
+{% block content %}
+<h1 class="text-xl font-bold mb-4">Quotation Request</h1>
+
+<form action="{% url 'quotation:submit' %}" method="post">
+    {% csrf_token %}
+    
+    <div class="grid grid-cols-1 gap-4 max-w-md mb-6">
+        <input name="first_name" class="border p-2" placeholder="First Name" required>
+        <input name="last_name" class="border p-2" placeholder="Last Name" required>
+        <input name="phone" class="border p-2" placeholder="Phone" required>
+        <input name="email" class="border p-2" placeholder="Email" required>
+        <textarea name="address" class="border p-2" placeholder="Address" required></textarea>
+    </div>
+
+    <h2 class="text-lg font-semibold mb-2 mt-8">Selected Items</h2>
+    <ul class="mb-4">
+        {% for entry in items %}
+        <li class="border p-2 mb-2 flex items-center space-x-4">
+            <span>{{ entry.item.name }}</span>
+            <input type="number" name="qty_{{ entry.item.id }}" value="{{ entry.quantity }}" min="1" class="w-16 border rounded px-2 py-1" />
+            <a href="{% url 'quotation:remove' entry.item.id %}" class="text-red-600 ml-4">Remove</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Submit Inquiry</button>
+    <a href="{% url 'item:browse' %}" class="ml-4 text-grey-500 underline">Return to Store</a>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li class="text-red-600">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+</form>
+{% endblock %}
